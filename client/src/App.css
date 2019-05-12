@@ -1,0 +1,40 @@
+.App {
+  text-align: center;
+}
+.blueTeam{
+  float:left;
+  background: black;
+  width:15%;
+  height:750px;
+}
+.redTeam{
+  float:right;
+  background: black;
+  width:15%;
+  height:750px;
+}
+.blue-champ{
+  width:15%;
+  height:150px;
+}
+.red-champ{
+  width:15%;
+  height:150px;
+}
+.scoreBoard{
+  float:center;
+  background: black;
+  height:300px;
+}
+.searchBox{
+  float:center;
+  background: black;
+}
+.selectBox{
+  float:center;
+  background: black;
+  height:450px;
+  overflow: scroll;
+  display: grid;
+  grid-template-columns: 100px 100px 100px 100px 100px 100px 100px 100px 100px 100px
+}

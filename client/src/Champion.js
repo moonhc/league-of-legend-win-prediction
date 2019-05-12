@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import '../Champion.css';
+import './Champion.css';
 import PropTypes from 'prop-types';
 
 function ChampionImage({image}){
