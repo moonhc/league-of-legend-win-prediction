@@ -26,6 +26,10 @@
   background: black;
   height:300px;
 }
+.searchBox{
+  float:center;
+  background: black;
+}
 .selectBox{
   float:center;
   background: black;

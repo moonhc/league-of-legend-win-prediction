@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 function ChampionImage({image}){
   return(
-    <img className='champImage' src={image} alt="Champion Face" />
+    <img className='champImage' src={image} />
   )
 }
 class Champion extends Component {
