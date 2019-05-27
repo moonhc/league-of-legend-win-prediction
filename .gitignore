@@ -63,3 +63,5 @@ typings/
 .next
 
 imgs/
+
+__pycache__*
