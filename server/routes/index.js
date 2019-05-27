@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const schema = require('../models/champ');
+const shell = require('shelljs');
 
 router.get('/', (req, res) => {
     res.status(200).send('API server is alive');
@@ -48,6 +49,20 @@ router.get('/:champID(\\d+)/runes', (req, res) => {
             res.send(items);
         })
         .catch(err => res.status(500).send(err))
+});
+
+router.get('/calculate/score', (req, res) => {
+    champIDs = req.query.id;
+    if (!champIDs) return res.status(404).send({ err: 'Champion is not found with given IDs' });
+
+    command = 'cd score_calculator; python3 main_mean.py --champions ' + champIDs.toString().replace(/,/gi, ' ')
+
+    result = shell.exec(command, {silent: true}).stdout
+    result = result.split('\n')[0].split(' ')
+    console.log(result)
+
+    score = { blueteam: result[0], redteam: result[1] };
+    res.send(score);
 });
 
 module.exports = router;

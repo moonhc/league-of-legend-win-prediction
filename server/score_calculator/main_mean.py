@@ -4,7 +4,7 @@ from model_mean import Model
 from params import*
 import argparse
 
-def make_prediction(sess, model, data):
+def make_prediction(sess, model, blue_input, red_input):
     input_var = tf.placeholder(dtype=tf.int64, shape=(None, None))
     target_var = tf.placeholder(dtype=tf.float32, shape=(None, None))
     prob = tf.placeholder_with_default(1.0, shape=())
@@ -19,8 +19,9 @@ def make_prediction(sess, model, data):
     saver.restore(sess, './tmp/trained_variables_mean.ckpt')
   
     change_array = np.load("./tmp/kor_eng.npy")
-    converted_data = change_array[np.array(data)]
-    converted_data = np.array(list(converted_data[:5])+list(converted_data[5:]+143))
+    converted_blue = change_array[np.array(blue_input)]
+    converted_red = change_array[np.array(red_input)]
+    converted_data = np.array(list(converted_blue)+list(converted_red+143))
     
     prediction = sess.run(model.output, feed_dict={input_var: np.array([converted_data]), target_var: np.ones((1,2))})
 
@@ -31,17 +32,15 @@ def parse_args():
     parser = argparse.ArgumentParser(description=desc)
 
     parser.add_argument('--champions', '--arg', type=int, nargs='+',
-                        help='Combination of champions, our team: 1~143, opponent team: 143~286')
-
+                        help='Combination of champions, nb: 1~5, range of champions: 0~142, put -1 between teams')
     return check_args(parser.parse_args())
 
 def check_args(args):
     try:
-        assert len(args.champions) <= 10 and len(args.champions) > 0 and type(args.champions[0]) is int
+        assert len(args.champions) <= 11 and len(args.champions) > 0 and type(args.champions[0]) is int
     except:
         print('Length is not valid or type is not int.')
         return None
-
     return args
 
 def main(args):
@@ -51,9 +50,13 @@ def main(args):
     model = Model(input_dim=INPUT_DIM, dim_hidden=DIM_HIDDEN, scope='model')
 
     sess = tf.Session(config=config)
-
+    
     data = np.array(args.champions)
-    blue, red = make_prediction(sess, model, data)
+    pos = np.argmin(data)
+
+    blue_input = np.array(data[:pos])
+    red_input = np.array(data[pos+1:])
+    blue, red = make_prediction(sess, model, blue_input, red_input)
     print(blue, red)
 
 if __name__ == '__main__':
