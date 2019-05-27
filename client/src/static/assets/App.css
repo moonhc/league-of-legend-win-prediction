@@ -5,13 +5,13 @@
   float:left;
   background: black;
   width:15%;
-  height:750px;
+  height:800px;
 }
 .redTeam{
   float:right;
   background: black;
   width:15%;
-  height:750px;
+  height:800px;
 }
 .blue-champ{
   width:15%;
@@ -33,7 +33,7 @@
 .selectBox{
   float:center;
   background: black;
-  height:450px;
+  height:490px;
   overflow: scroll;
   display: grid;
   grid-template-columns: 100px 100px 100px 100px 100px 100px 100px 100px 100px 100px

@@ -1,20 +1,27 @@
+import ReactDOM from 'react-dom';
 import React, { Component } from 'react';
 import './static/assets/App.css';
 import Champion from './components/Champion'
 import Score from './components/Score'
 
-class App extends Component {
+class App extends Champion {
   constructor(){
     super();
     this.state = {
      keyword:'',
      calculated : true,
-     blueTeam : [0,1,2,3,142],
-     redTeam : [13,23,33,43,53],
+     blueTeam : [49,5,17,92,23],
+     redTeam : [59,29,13,16,27],
 
     searchedChampions:[], 
     champions:[
-    {
+      {
+        id : 0,
+       name : "Random"
+       ,name2 : "랜덤"
+     },
+ 
+     {
        id : 1,
       name : "Garen"
       ,name2 : "가렌"
@@ -726,21 +733,12 @@ name : "Pyke"
       id : 143,
       name : "Hecarim"
       ,name2 : "헤카림"
-      },
-       {
-         id:144,
-          name:''
-          ,name2 : ""
-        }
+      }
       ]
    };
-   this.handleChange = this.handleChange.bind(this);
+   this.keyWordChange = this.keyWordChange.bind(this);
   }
-  handleChange(e){
-    this.setState({
-      keyword:e.target.value
-    })
-  }
+  keyWordChange(e){this.setState({keyword:e.target.value})}
    
   _renderChamps = (ASD) => {
     this.state.keyword = this.state.keyword.toLowerCase()
@@ -750,23 +748,41 @@ name : "Pyke"
       }
     )
     const champions = ASD.map((champ,index) => {
-      return <Champion 
-          title={champ.name} 
-          image={'http://ddragon.leagueoflegends.com/cdn/9.8.1/img/champion/'+String(champ.name)+'.png'}
-          key={index}/>
+      if(champ.id==0)
+      {
+        return null;
+      }
+      else{
+        return <Champion
+           team= '0' 
+           title={champ.name} 
+           image={'http://ddragon.leagueoflegends.com/cdn/9.8.1/img/champion/'+String(champ.name)+'.png'}
+           number={champ.id}
+           key={index}/>
+     }
     })
     return champions
   }
   _renderTeam = (team) => {
     const champions = team.map((champ,index) => {
+      if(this.state.champions[champ].id==0)
+      {
+        return null;
+      }
+      else{
       return <Champion 
+          team = '1'
           title={this.state.champions[champ].name} 
           image={'http://ddragon.leagueoflegends.com/cdn/9.8.1/img/champion/'+String(this.state.champions[champ].name)+'.png'}
+          number={this.state.champions[champ].id}
           key={index}/>
-    })
+    }})
     return champions
   }
   refresh = () => {
+    this.state.blueTeam = [0,0,0,0,0]
+    this.state.redTeam = [0,0,0,0,0]
+    ReactDOM.render(<App />, document.getElementById('root'));
   }
   _renderScore = (blue,red) => {
     const blueScore = 100
@@ -793,8 +809,8 @@ name : "Pyke"
            {this.state.calculated ? this._renderScore(this.state.blueTeam,this.state.redTeam) : 'Champions should be selected'}
           </div>
           <div className='searchBox'>
-            <input name="keyword" placeholder="Search" value={this.state.keyword} onChange={this.handleChange}></input>
-            <button onclick={this.refresh}> Again </button>
+            <input name="keyword" placeholder="Search" value={this.state.keyword} onChange={this.keyWordChange}></input>
+            <button onClick={this.refresh}> Again </button>
          </div>
           <div className="selectBox">
             {this._renderChamps(this.state.champions)}

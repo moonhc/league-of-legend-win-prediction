@@ -7,9 +7,7 @@ class Score extends Component {
     _blueWin = () => {
         return (
         <div className="blueScore">
-            {this.props.blueScore}
-            {this.props.redScore}
-            <img src={"blueWin.png"} />
+            <img src="https://github.com/SeongJinAhn/league-of-legend-win-prediction/blob/master/client/src/blueWin.png?raw=true" width="1000px" />
 
           </div>
         )
@@ -18,9 +16,7 @@ class Score extends Component {
       _redWin = () => {
         return (
           <div className="redScore">
-            {this.props.blueScore}
-            {this.props.redScore}
-            <img src={"redWin.png"} />
+            <img src="https://github.com/SeongJinAhn/league-of-legend-win-prediction/blob/master/client/src/redWin.png?raw=true" width="1000px"/>
           </div>
         )
       }

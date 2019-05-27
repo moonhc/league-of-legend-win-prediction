@@ -2,6 +2,13 @@
     font-family: 'Lato', sans-serif;
     color: #567;
 }
+.teamImage{
+max-width:200px;
+height:140px;
+left:30%;
+}
 .champImage{
-    width:100px;
+    display:block;
+    width:80px;
+    height:80px;
 }
