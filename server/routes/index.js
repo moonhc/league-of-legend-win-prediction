@@ -52,14 +52,19 @@ router.get('/:champID(\\d+)/runes', (req, res) => {
 });
 
 router.get('/calculate/score', (req, res) => {
-    champIDs = req.query.id;
+    let champIDs = req.query.id;
     if (!champIDs) return res.status(404).send({ err: 'Champion is not found with given IDs' });
+    champIDs = JSON.parse(champIDs);
+    if (champIDs.length > 11) return res.status(404).send({ err: 'The number of champion must be less than 10' });
+    for (let id of champIDs) {
+        if (!parseInt(id)) return res.status(404).send({ err: 'Champion ID should be integer'});
+
+    }
 
     command = 'cd score_calculator; python3 main_mean.py --champions ' + champIDs.toString().replace(/,/gi, ' ')
 
     result = shell.exec(command, {silent: true}).stdout
     result = result.split('\n')[0].split(' ')
-    console.log(result)
 
     score = { blueteam: result[0], redteam: result[1] };
     res.send(score);
