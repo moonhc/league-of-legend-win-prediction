@@ -1,742 +1,782 @@
+import ReactDOM from 'react-dom';
 import React, { Component } from 'react';
 import './static/assets/App.css';
-import Champion from './components/Champion'
-import Score from './components/Score'
+import Champion from './components/Champion';
+import Score from './components/Score';
+import Request from 'react-http-request'
 
-class App extends Component {
+class App extends Champion {
   constructor(){
     super();
     this.state = {
      keyword:'',
-     calculated : true,
-     blueTeam : [0,1,2,3,142],
-     redTeam : [13,23,33,43,53],
+     calculated : false,
+     teamQuery:'',
+     blueTeam : [0,0,0,0,0],
+     redTeam : [0,0,0,0,0],
+     whichNumber : 0,
+     whichTeam : 0,
 
     searchedChampions:[], 
     champions:[
-    {
+      {
+        id : 0,
+       name : "Random"
+       ,name2 : "·£´ý"
+     },
+ 
+     {
        id : 1,
       name : "Garen"
-      ,name2 : "ê°€ë Œ"
+      ,name2 : "°¡·»"
     },
     {
      id : 2,
      name : "Galio"
-     ,name2 : "ê°ˆë¦¬ì˜¤"
+     ,name2 : "°¥¸®¿À"
     },
     {
       id : 3,
       name : "Gangplank"
-      ,name2 : "ê°±í”Œëž­í¬"
+      ,name2 : "°»ÇÃ·©Å©"
      },
      {
       id : 4,
       name : "Gragas"
-      ,name2 : "ê·¸ë¼ê°€ìŠ¤"
+      ,name2 : "±×¶ó°¡½º"
      },
      {
      id : 5,
      name : "Graves"
-     ,name2 : "ê·¸ë ˆì´ë¸Œì¦ˆ"
+     ,name2 : "±×·¹ÀÌºêÁî"
     },
     {
       id : 6,
      name : "Gnar"
-     ,name2 : "ë‚˜ë¥´"
+     ,name2 : "³ª¸£"
     },
    {
     id : 7,
     name : "Nami"
-    ,name2 : "ë‚˜ë¯¸"
+    ,name2 : "³ª¹Ì"
   },
    {
     id : 8,
     name : "Nasus"
-    ,name2 : "ë‚˜ì„œìŠ¤"
+    ,name2 : "³ª¼­½º"
   },
    {
     id : 9,
     name : "Nautilus"
-    ,name2 : "ë…¸í‹¸ëŸ¬ìŠ¤"
+    ,name2 : "³ëÆ¿·¯½º"
   },
    {
     id : 10,
     name : "Nocturne"
-    ,name2 : "ë…¹í„´"
+    ,name2 : "³ìÅÏ"
   },
    {
     id : 11,
    name : "Nunu"
-   ,name2 : "ëˆ„ëˆ„ì™€ ìœŒëŸ¼í”„"
+   ,name2 : "´©´©¿Í Àª·³ÇÁ"
   },
  {
   id : 12,
   name : "Nidalee"
-  ,name2 : "ë‹ˆë‹¬ë¦¬"
+  ,name2 : "´Ï´Þ¸®"
 },
  {
   id : 13,
   name : "Neeko"
-  ,name2 : "ë‹ˆì½”"
+  ,name2 : "´ÏÄÚ"
 },
  {
   id : 14,
   name : "Darius"
-  ,name2 : "ë‹¤ë¦¬ìš°ìŠ¤"
+  ,name2 : "´Ù¸®¿ì½º"
 },
  {
    id : 15,
   name : "Diana"
-  ,name2 : "ë‹¤ì´ì• ë‚˜"
+  ,name2 : "´ÙÀÌ¾Ö³ª"
 },
 {
  id : 16,
  name : "Draven"
- ,name2 : "ë“œë ˆì´ë¸"
+ ,name2 : "µå·¹ÀÌºì"
 },
 {
  id : 17,
  name : "Ryze"
- ,name2 : "ë¼ì´ì¦ˆ"
+ ,name2 : "¶óÀÌÁî"
 },
 {
  id : 18,
  name : "Rakan"
- ,name2 : "ë¼ì¹¸"
+ ,name2 : "¶óÄ­"
 },
 {
  id : 19,
  name : "Rammus"
- ,name2 : "ëžŒë¨¸ìŠ¤"
+ ,name2 : "¶÷¸Ó½º"
 } ,{
   id : 20,
  name : "Lux"
- ,name2 : "ëŸ­ìŠ¤"
+ ,name2 : "·°½º"
 },
 {
 id : 21,
 name : "Rumble"
-,name2 : "ëŸ¼ë¸”"
+,name2 : "·³ºí"
 },
 {
 id : 22,
 name : "Renekton"
-,name2 : "ë ˆë„¥í†¤"
+,name2 : "·¹³ØÅæ"
 },
 {
 id : 23,
 name : "Leona"
-,name2 : "ë ˆì˜¤ë‚˜"
+,name2 : "·¹¿À³ª"
 },
 {
  id : 24,
 name : "RekSai"
-,name2 : "ë ‰ì‚¬ì´"
+,name2 : "·º»çÀÌ"
 },
 {
 id : 25,
 name : "Rengar"
-,name2 : "ë ê°€"
+,name2 : "·À°¡"
 },
 {
 id : 26,
 name : "Lucian"
-,name2 : "ë£¨ì‹œì•ˆ"
+,name2 : "·ç½Ã¾È"
 },
 {
 id : 27,
 name : "Lulu"
-,name2 : "ë£°ë£¨"
+,name2 : "·ê·ç"
 },
 {
 id : 28,
 name : "Leblanc"
-,name2 : "ë¥´ë¸”ëž‘"
+,name2 : "¸£ºí¶û"
 } ,
 {
   id : 29,
  name : "LeeSin"
- ,name2 : "ë¦¬ì‹ "
+ ,name2 : "¸®½Å"
 },
 {
 id : 30,
 name : "Riven"
-,name2 : "ë¦¬ë¸"
+,name2 : "¸®ºì"
 },
 {
 id : 31,
 name : "Lissandra"
-,name2 : "ë¦¬ì‚°ë“œë¼"
+,name2 : "¸®»êµå¶ó"
 },
 {
 id : 32,
 name : "MasterYi"
-,name2 : "ë§ˆìŠ¤í„°ì´"
+,name2 : "¸¶½ºÅÍÀÌ"
 },
 {
  id : 33,
 name : "Maokai"
-,name2 : "ë§ˆì˜¤ì¹´ì´"
+,name2 : "¸¶¿ÀÄ«ÀÌ"
 },
 {
 id : 34,
 name : "Malzahar"
-,name2 : "ë§ìží•˜"
+,name2 : "¸»ÀÚÇÏ"
 },
 {
 id : 35,
 name : "Malphite"
-,name2 : "ë§íŒŒì´íŠ¸"
+,name2 : "¸»ÆÄÀÌÆ®"
 },
 {
 id : 36,
 name : "Mordekaiser"
-,name2 : "ëª¨ë°ì¹´ì´ì €"
+,name2 : "¸ðµ¥Ä«ÀÌÀú"
 },
 {
 id : 37,
 name : "Morgana"
-,name2 : "ëª¨ë¥´ê°€ë‚˜"
+,name2 : "¸ð¸£°¡³ª"
 },
 {
   id : 38,
  name : "DrMundo"
- ,name2 : "ë¬¸ë„ë°•ì‚¬"
+ ,name2 : "¹®µµ¹Ú»ç"
 },
 {
 id : 39,
 name : "MissFortune"
-,name2 : "ë¯¸ìŠ¤í¬ì¸ˆ"
+,name2 : "¹Ì½ºÆ÷Ãó"
 },
 {
 id : 40,
 name : "Bard"
-,name2 : "ë°”ë“œ"
+,name2 : "¹Ùµå"
 },
 {
 id : 41,
 name : "Varus"
-,name2 : "ë°”ë£¨ìŠ¤"
+,name2 : "¹Ù·ç½º"
 },
 {
  id : 42,
 name : "Vi"
-,name2 : "ë°”ì´"
+,name2 : "¹ÙÀÌ"
 },
 {
 id : 43,
 name : "Veigar"
-,name2 : "ë² ì´ê°€"
+,name2 : "º£ÀÌ°¡"
 },
 {
 id : 44,
 name : "Vayne"
-,name2 : "ë² ì¸"
+,name2 : "º£ÀÎ"
 },
 {
 id : 45,
 name : "Velkoz"
-,name2 : "ë²¨ì½”ì¦ˆ"
+,name2 : "º§ÄÚÁî"
 },
 {
 id : 46,
 name : "Volibear"
-,name2 : "ë³¼ë¦¬ë² ì–´"
+,name2 : "º¼¸®º£¾î"
 },
 {
 id : 47,
 name : "Braum"
-,name2 : "ë¸Œë¼ì›€"
+,name2 : "ºê¶ó¿ò"
 },
 {
 id : 48,
 name : "Brand"
-,name2 : "ë¸Œëžœë“œ"
+,name2 : "ºê·£µå"
 },
 {
 id : 49,
 name : "Vladimir"
-,name2 : "ë¸”ë¼ë””ë¯¸ë¥´"
+,name2 : "ºí¶óµð¹Ì¸£"
 },
 {
 id : 50,
 name : "Blitzcrank"
-,name2 : "ë¸”ë¦¬ì¸ í¬ëž­í¬"
+,name2 : "ºí¸®Ã÷Å©·©Å©"
 },
 {
 id : 51,
 name : "Viktor"
-,name2 : "ë¹…í† ë¥´"
+,name2 : "ºòÅä¸£"
 },
 {
 id : 52,
 name : "Poppy"
-,name2 : "ë½€ë¹ "
+,name2 : "»Çºü"
 },
 {
   id : 53,
   name : "Sion"
-  ,name2 : "ì‚¬ì´ì˜¨"
+  ,name2 : "»çÀÌ¿Â"
 },
   {
 id : 54,
 name : "Sylas"
-,name2 : "ì‚¬ì¼ëŸ¬ìŠ¤"
+,name2 : "»çÀÏ·¯½º"
 },
 {
 id : 55,
 name : "Shaco"
-,name2 : "ìƒ¤ì½”"
+,name2 : "»þÄÚ"
 },
 {
 id : 56,
 name : "Sejuani"
-,name2 : "ì„¸ì£¼ì•„ë‹ˆ"
+,name2 : "¼¼ÁÖ¾Æ´Ï"
 },
 {
 id : 57,
 name : "Sona"
-,name2 : "ì†Œë‚˜"
+,name2 : "¼Ò³ª"
 },
 {
 id : 58,
 name : "Soraka"
-,name2 : "ì†Œë¼ì¹´"
+,name2 : "¼Ò¶óÄ«"
 },
 {
 id : 59,
 name : "Shen"
-,name2 : "ì‰”"
+,name2 : "½¨"
 },
 {
 id : 60,
 name : "Shyvana"
-,name2 : "ì‰¬ë°”ë‚˜"
+,name2 : "½¬¹Ù³ª"
 },
 {
 id : 61,
 name : "Swain"
-,name2 : "ìŠ¤ì›¨ì¸"
+,name2 : "½º¿þÀÎ"
 },
 {
 id : 62,
 name : "Skarner"
-,name2 : "ìŠ¤ì¹´ë„ˆ"
+,name2 : "½ºÄ«³Ê"
 },
 {
 id : 63,
 name : "Sivir"
-,name2 : "ì‹œë¹„ë¥´"
+,name2 : "½Ãºñ¸£"
 },
 {
 id : 64,
 name : "XinZhao"
-,name2 : "ì‹ ì§œì˜¤"
+,name2 : "½ÅÂ¥¿À"
 } ,
 {
 id : 65,
 name : "Syndra"
-,name2 : "ì‹ ë“œë¼"
+,name2 : "½Åµå¶ó"
 },
 {
 id : 66,
 name : "Singed"
-,name2 : "ì‹ ì§€ë“œ"
+,name2 : "½ÅÁöµå"
 },
 {
 id : 67,
 name : "Thresh"
-,name2 : "ì“°ë ˆì‰¬"
+,name2 : "¾²·¹½¬"
 },
 {
 id : 68,
 name : "Ahri"
-,name2 : "ì•„ë¦¬"
+,name2 : "¾Æ¸®"
 },
 {
 id : 69,
 name : "Amumu"
-,name2 : "ì•„ë¬´ë¬´"
+,name2 : "¾Æ¹«¹«"
 },
 {
 id : 70,
 name : "AurelionSol"
-,name2 : "ì•„ìš°ë ë¦¬ì˜¨ì†”"
+,name2 : "¾Æ¿ì·¼¸®¿Â¼Ö"
 },
 {
 id : 71,
 name : "Ivern"
-,name2 : "ì•„ì´ë²ˆ"
+,name2 : "¾ÆÀÌ¹ø"
 },
 {
 id : 72,
 name : "Azir"
-,name2 : "ì•„ì§€ë¥´"
+,name2 : "¾ÆÁö¸£"
 },
 {
 id : 73,
 name : "Akali"
-,name2 : "ì•„ì¹¼ë¦¬"
+,name2 : "¾ÆÄ®¸®"
 },
 {
   id : 74,
   name : "Aatrox"
-  ,name2 : "ì•„íŠ¸ë¡ìŠ¤"
+  ,name2 : "¾ÆÆ®·Ï½º"
 },
  {
   id : 75,
   name : "Alistar"
-  ,name2 : "ì•Œë¦¬ìŠ¤íƒ€"
+  ,name2 : "¾Ë¸®½ºÅ¸"
 },
  {
   id : 76,
   name : "Annie"
-  ,name2 : "ì• ë‹ˆ"
+  ,name2 : "¾Ö´Ï"
 },
  {
    id : 77,
   name : "Anivia"
-  ,name2 : "ì• ë‹ˆë¹„ì•„"
+  ,name2 : "¾Ö´Ïºñ¾Æ"
 },
 {
  id : 78,
  name : "Ashe"
- ,name2 : "ì• ì‰¬"
+ ,name2 : "¾Ö½¬"
 },
 {
  id : 79,
  name : "Yasuo"
- ,name2 : "ì•¼ìŠ¤ì˜¤"
+ ,name2 : "¾ß½º¿À"
 },
 {
  id : 80,
  name : "Ekko"
- ,name2 : "ì—ì½”"
+ ,name2 : "¿¡ÄÚ"
 },
 {
  id : 81,
  name : "Elise"
- ,name2 : "ì—˜ë¦¬ìŠ¤"
+ ,name2 : "¿¤¸®½º"
 } ,{
   id : 82,
  name : "MonkeyKing"
- ,name2 : "ì˜¤ê³µ"
+ ,name2 : "¿À°ø"
 },
 {
 id : 83,
 name : "Ornn"
-,name2 : "ì˜¤ë¥¸"
+,name2 : "¿À¸¥"
 },
 {
 id : 84,
 name : "Orianna"
-,name2 : "ì˜¤ë¦¬ì•„ë‚˜"
+,name2 : "¿À¸®¾Æ³ª"
 },
 {
 id : 85,
 name : "Olaf"
-,name2 : "ì˜¬ë¼í”„"
+,name2 : "¿Ã¶óÇÁ"
 },
 {
  id : 86,
 name : "Yorick"
-,name2 : "ìš”ë¦­"
+,name2 : "¿ä¸¯"
 },
 {
 id : 87,
 name : "Udyr"
-,name2 : "ìš°ë””ë¥´"
+,name2 : "¿ìµð¸£"
 },
 {
 id : 88,
 name : "Urgot"
-,name2 : "ìš°ë¥´ê³³"
+,name2 : "¿ì¸£°÷"
 },
 {
 id : 89,
 name : "Warwick"
-,name2 : "ì›Œìœ…"
+,name2 : "¿öÀ¨"
 },
 {
 id : 90,
 name : "Irelia"
-,name2 : "ì´ë ë¦¬ì•„"
+,name2 : "ÀÌ·¼¸®¾Æ"
 } ,
 {
   id : 91,
  name : "Evelynn"
- ,name2 : "ì´ë¸”ë¦°"
+ ,name2 : "ÀÌºí¸°"
 },
 {
 id : 92,
 name : "Ezreal"
-,name2 : "ì´ì¦ˆë¦¬ì–¼"
+,name2 : "ÀÌÁî¸®¾ó"
 },
 {
 id : 93,
 name : "Illaoi"
-,name2 : "ì¼ë¼ì˜¤ì´"
+,name2 : "ÀÏ¶ó¿ÀÀÌ"
 },
 {
 id : 94,
 name : "JarvanIV"
-,name2 : "ìžë¥´ë°˜"
+,name2 : "ÀÚ¸£¹Ý"
 },
 {
  id : 95,
 name : "Xayah"
-,name2 : "ìžì•¼"
+,name2 : "ÀÚ¾ß"
 },
 {
 id : 96,
 name : "Zyra"
-,name2 : "ìžì´ë¼"
+,name2 : "ÀÚÀÌ¶ó"
 },
 {
 id : 97,
 name : "Zac"
-,name2 : "ìží¬"
+,name2 : "ÀÚÅ©"
 },
 {
 id : 98,
 name : "Janna"
-,name2 : "ìž”ë‚˜"
+,name2 : "ÀÜ³ª"
 },
 {
 id : 99,
 name : "Jax"
-,name2 : "ìž­ìŠ¤"
+,name2 : "Àè½º"
 },
 {
   id : 100,
  name : "Zed"
- ,name2 : "ì œë“œ"
+ ,name2 : "Á¦µå"
 },
 {
   id : 101,
   name : "Xerath"
-  ,name2 : "ì œë¼ìŠ¤"
+  ,name2 : "Á¦¶ó½º"
 },
 {
 id : 102,
 name : "Jayce"
-,name2 : "ì œì´ìŠ¤"
+,name2 : "Á¦ÀÌ½º"
 },
 {
 id : 103,
 name : "Zoe"
-,name2 : "ì¡°ì´"
+,name2 : "Á¶ÀÌ"
 },
 {
 id : 104,
 name : "Ziggs"
-,name2 : "ì§ìŠ¤"
+,name2 : "Á÷½º"
 },
 {
  id : 105,
 name : "Jhin"
-,name2 : "ì§„"
+,name2 : "Áø"
 },
 {
 id : 106,
 name : "Zilean"
-,name2 : "ì§ˆë¦¬ì–¸"
+,name2 : "Áú¸®¾ð"
 },
 {
 id : 107,
 name : "Jinx"
-,name2 : "ì§•í¬ìŠ¤"
+,name2 : "Â¡Å©½º"
 },
 {
 id : 108,
 name : "Chogath"
-,name2 : "ì´ˆê°€ìŠ¤"
+,name2 : "ÃÊ°¡½º"
 },
 {
 id : 109,
 name : "Karma"
-,name2 : "ì¹´ë¥´ë§ˆ"
+,name2 : "Ä«¸£¸¶"
 },
 {
 id : 110,
 name : "Camille"
-,name2 : "ì¹´ë°€"
+,name2 : "Ä«¹Ð"
 },
 {
 id : 111,
 name : "Kassadin"
-,name2 : "ì¹´ì‚¬ë”˜"
+,name2 : "Ä«»çµò"
 },
 {
 id : 112,
 name : "Karthus"
-,name2 : "ì¹´ì„œìŠ¤"
+,name2 : "Ä«¼­½º"
 },
 {
 id : 113,
 name : "Cassiopeia"
-,name2 : "ì¹´ì‹œì˜¤íŽ˜ì•„"
+,name2 : "Ä«½Ã¿ÀÆä¾Æ"
 },
 {
 id : 114,
 name : "Kaisa"
-,name2 : "ì¹´ì´ì‚¬"
+,name2 : "Ä«ÀÌ»ç"
 },
 {
   id : 115,
   name : "Khazix"
-  ,name2 : "ì¹´ì§ìŠ¤"
+  ,name2 : "Ä«Á÷½º"
 },
   {
 id : 116,
 name : "Katarina"
-,name2 : "ì¹´íƒ€ë¦¬ë‚˜"
+,name2 : "Ä«Å¸¸®³ª"
 },
 {
 id : 117,
 name : "Kalista"
-,name2 : "ì¹¼ë¦¬ìŠ¤íƒ€"
+,name2 : "Ä®¸®½ºÅ¸"
 },
 {
 id : 118,
 name : "Kennen"
-,name2 : "ì¼€ë„¨"
+,name2 : "ÄÉ³Ù"
 },
 {
 id : 119,
 name : "Caitlyn"
-,name2 : "ì¼€ì´í‹€ë¦°"
+,name2 : "ÄÉÀÌÆ²¸°"
 },
 {
 id : 120,
 name : "Kayn"
-,name2 : "ì¼€ì¸"
+,name2 : "ÄÉÀÎ"
 },
 {
 id : 121,
 name : "Kayle"
-,name2 : "ì¼€ì¼"
+,name2 : "ÄÉÀÏ"
 },
 {
 id : 122,
 name : "KogMaw"
-,name2 : "ì½”ê·¸ëª¨"
+,name2 : "ÄÚ±×¸ð"
 },
 {
 id : 123,
 name : "Corki"
-,name2 : "ì½”ë¥´í‚¤"
+,name2 : "ÄÚ¸£Å°"
 },
 {
 id : 124,
 name : "Quinn"
-,name2 : "í€¸"
+,name2 : "Äý"
 },
 {
 id : 125,
 name : "Kled"
-,name2 : "í´ë ˆë“œ"
+,name2 : "Å¬·¹µå"
 },
 {
 id : 126,
 name : "Kindred"
-,name2 : "í‚¨ë“œë ˆë“œ"
+,name2 : "Å²µå·¹µå"
 } ,
 {
 id : 127,
 name : "Taric"
-,name2 : "íƒ€ë¦­"
+,name2 : "Å¸¸¯"
 },
 {
 id : 128,
 name : "Talon"
-,name2 : "íƒˆë¡ "
+,name2 : "Å»·Ð"
 },
 {
 id : 129,
 name : "Taliyah"
-,name2 : "íƒˆë¦¬ì•¼"
+,name2 : "Å»¸®¾ß"
 },
 {
 id : 130,
 name : "TahmKench"
-,name2 : "íƒì¼„ì¹˜"
+,name2 : "Å½ÄËÄ¡"
 },
 {
 id : 131,
 name : "Trundle"
-,name2 : "íŠ¸ëŸ°ë“¤"
+,name2 : "Æ®·±µé"
 },
 {
 id : 132,
 name : "Tristana"
-,name2 : "íŠ¸ë¦¬ìŠ¤íƒ€ë‚˜"
+,name2 : "Æ®¸®½ºÅ¸³ª"
 },
 {
 id : 133,
 name : "Tryndamere"
-,name2 : "íŠ¸ë¦°ë‹¤ë¯¸ì–´"
+,name2 : "Æ®¸°´Ù¹Ì¾î"
 },
 {
 id : 134,
 name : "TwistedFate"
-,name2 : "íŠ¸ìœ„ìŠ¤í‹°ë“œíŽ˜ì´íŠ¸"
+,name2 : "Æ®À§½ºÆ¼µåÆäÀÌÆ®"
 },
 {
 id : 135,
 name : "Twitch"
-,name2 : "íŠ¸ìœ„ì¹˜"
+,name2 : "Æ®À§Ä¡"
 },           
 {
 id : 136,
 name : "Teemo"
-,name2 : "í‹°ëª¨"
+,name2 : "Æ¼¸ð"
 },
 {
 id : 137,
 name : "Pyke"
-,name2 : "íŒŒì´í¬"
+,name2 : "ÆÄÀÌÅ©"
 },
 {
   id : 138,
   name : "Pantheon"
-  ,name2 : "íŒí…Œì˜¨"
+  ,name2 : "ÆÇÅ×¿Â"
 },
   {
   id : 139,
   name : "Fiddlesticks"
-  ,name2 : "í”¼ë“¤ìŠ¤í‹±"
+  ,name2 : "ÇÇµé½ºÆ½"
 },
   {
     id : 140,
     name : "Fiora"
-    ,name2 : "í”¼ì˜¤ë¼"
+    ,name2 : "ÇÇ¿À¶ó"
   },
     {
     id : 141,
     name : "Fizz"
-    ,name2 : "í”¼ì¦ˆ"
+    ,name2 : "ÇÇÁî"
   },
     {
       id : 142,
       name : "Heimerdinger"
-      ,name2 : "í•˜ì´ë¨¸ë”©ê±°"
+      ,name2 : "ÇÏÀÌ¸Óµù°Å"
       },
       {
       id : 143,
       name : "Hecarim"
-      ,name2 : "í—¤ì¹´ë¦¼"
-      },
-       {
-         id:144,
-          name:''
-          ,name2 : ""
-        }
+      ,name2 : "ÇìÄ«¸²"
+      }
       ]
    };
-   this.handleChange = this.handleChange.bind(this);
+   this.keyWordChange = this.keyWordChange.bind(this);
+   this.imageClick = this.imageClick.bind(this);
   }
-  handleChange(e){
+  imageClick = (id) =>{
+    if(this.state.blueTeam.includes(id))
+    {
+      alert('The Champion is already selected in Blue!!')
+      return;
+    }
+    if(this.state.redTeam.includes(id))
+    {
+      alert('The Champion is already selected in Red!!')
+      return;
+    }
+    if(this.state.whichNumber==5)
+    {
+      alert('full count')
+      return;
+    }
+    if(this.state.whichTeam == 0)
+    {
+      this.state.blueTeam[this.state.whichNumber]=id;
+      this.state.whichTeam = 1;
+    }
+    else
+    {
+      this.state.redTeam[this.state.whichNumber]=id;
+      this.state.whichTeam = 0;
+      this.state.whichNumber = this.state.whichNumber+1
+    }
+    if(this.state.whichNumber==5)
+    {
+       this.state.calculated=true;
+    }
+    ReactDOM.render(<App />, document.getElementById('root'));
+  }
+  keyWordChange(e){
     this.setState({
       keyword:e.target.value
     })
@@ -744,40 +784,63 @@ name : "Pyke"
    
   _renderChamps = (ASD) => {
     this.state.keyword = this.state.keyword.toLowerCase()
-    ASD = ASD.filter(
-      (contact) => {
-        return contact.name2.indexOf(this.state.keyword)+contact.name.toLowerCase().indexOf(this.state.keyword) > -2;
-      }
-    )
     const champions = ASD.map((champ,index) => {
-      return <Champion 
-          title={champ.name} 
-          image={'http://ddragon.leagueoflegends.com/cdn/9.8.1/img/champion/'+String(champ.name)+'.png'}
-          key={index}/>
+      if(champ.name2.indexOf(this.state.keyword)+champ.name.toLowerCase().indexOf(this.state.keyword) <= -2)
+      {
+        return null;
+      }
+      if(champ.id==0)
+      {
+        return null;
+      }
+      else{
+        return (
+          <img className="champImage"  src={'http://ddragon.leagueoflegends.com/cdn/9.8.1/img/champion/'+String(champ.name)+'.png'}
+          onClick={()=>this.imageClick(index)}
+          value={this.state.redTeam[0]}
+          ></img>
+        ) //¿Ö 
+     }
     })
     return champions
   }
   _renderTeam = (team) => {
     const champions = team.map((champ,index) => {
+      if(this.state.champions[champ].id==0)
+      {
+        return null;
+      }
+      else{
       return <Champion 
+          team = '1'
           title={this.state.champions[champ].name} 
           image={'http://ddragon.leagueoflegends.com/cdn/9.8.1/img/champion/'+String(this.state.champions[champ].name)+'.png'}
+          number={this.state.champions[champ].id}
           key={index}/>
-    })
+    }})
     return champions
   }
   refresh = () => {
+    this.state.blueTeam = [0,0,0,0,0]
+    this.state.redTeam = [0,0,0,0,0]
+    this.state.whichNumber=0
+    this.state.whichTeam=0
+    this.state.calculated=false
+    ReactDOM.render(<App />, document.getElementById('root'));
   }
   _renderScore = (blue,red) => {
-    const blueScore = 100
-    const redScore = 99
-    return <Score 
-    whoWin = {blueScore>redScore ? 1 : 0}
-    blueScore={blueScore}
-    redScore = {redScore}
+    this.state.teamQuery = 'id=['
+    for(var i=0;i<5;i++)
+      this.state.teamQuery = this.state.teamQuery + String(blue[i])+','
+    this.state.teamQuery = this.state.teamQuery+'-1,'
+   for(var i=0;i<4;i++)
+      this.state.teamQuery = this.state.teamQuery + String(red[i])+','
+   this.state.teamQuery = this.state.teamQuery+String(red[4])+']'
+      return <Score 
+    teamQuery={this.state.teamQuery}
     />
   }
-  render() {
+  render() { //() => ´Â ¹«½¼ ÀÇ¹Ì????
     return (
       <div className="main">
          <div className="blueTeam">
@@ -789,12 +852,13 @@ name : "Pyke"
         </div>
 
         <div className="centerBoard">
+           
            <div className="scoreBoard">
            {this.state.calculated ? this._renderScore(this.state.blueTeam,this.state.redTeam) : 'Champions should be selected'}
           </div>
           <div className='searchBox'>
-            <input name="keyword" placeholder="Search" value={this.state.keyword} onChange={this.handleChange}></input>
-            <button onclick={this.refresh}> Again </button>
+            <input name="keyword" placeholder="Search" value={this.state.keyword} onChange={this.keyWordChange}></input>
+            <button onClick={this.refresh}> Again </button>
          </div>
           <div className="selectBox">
             {this._renderChamps(this.state.champions)}
@@ -805,5 +869,4 @@ name : "Pyke"
     );
   }
 }
-
 export default App;
